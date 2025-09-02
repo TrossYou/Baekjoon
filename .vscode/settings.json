@@ -1,0 +1,6 @@
+{
+  "code-runner.fileDirectoryAsCwd": true,
+  "code-runner.executorMap": {
+    "javascript": "node $fileName < input.txt"
+  }
+}
