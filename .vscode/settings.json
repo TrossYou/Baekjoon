@@ -1,5 +1,6 @@
 {
   "code-runner.fileDirectoryAsCwd": true,
+  "code-runner.runInTerminal": true,
   "code-runner.executorMap": {
     "javascript": "node $fileName < input.txt"
   }
