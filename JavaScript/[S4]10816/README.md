@@ -53,7 +53,7 @@
 
 ## 🤔 3. 문제 회고 (Retrospective)
 
-### 🐾 3-1. 오류 해결 과정 (Trubleshooting Log)
+### 🐾 3-1. 오류 해결 과정 (Troubleshooting Log)
 
 ![image.png](attachment:a3c0c3b5-55ad-4f4a-9600-0f06c477d927:image.png)
 
@@ -72,6 +72,6 @@
 - **`Map` 객체의 활용**: JavaScript에서 key-value 데이터를 다룰 때, 일반 객체 `Object`보다 `Map`이 더 정확하고 안전한 선택이다. `get()`, `set()`, `has()` 등 명시적인 메서드를 사용해 데이터를 조작하며, 모든 타입의 키를 허용한다는 장점이 있다
 - **논리 연산자를 이용한 기본값 처리**: `A || B` 구문은 A가 falsy(예: `undefined`, `null`, `0`)일 때 B를 반환한다. \*여기서 undefined도 falsy라는 점을 간과하여 +undefined → NaN을 사용해 로직을 구현했었음..
 
-### 🧐 3-3. 더 궁금한 점 & 다음 목표 (Further Questioins)
+### 🧐 3-3. 더 궁금한 점 & 다음 목표 (Further Questions)
 
 - `Map`과 `Object`의 정확한 차이점은?

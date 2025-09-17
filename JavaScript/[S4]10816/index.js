@@ -1,4 +1,4 @@
-fs = require("fs");
+const fs = require("fs");
 const input = fs.readFileSync("/dev/stdin").toString().trim().split("\n");
 
 const nArr = input[1].split(" ").map((num) => Number(num));
