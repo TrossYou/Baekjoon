@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Solution",
+      "request": "launch",
+      "mainClass": "Solution",
+      "projectName": "Baekjoon_cc9045ca"
+    },
+    {
+      "type": "java",
+      "name": "Run Current Java File",
+      "request": "launch",
+      "mainClass": "${file}",
+      "cwd": "${fileDirname}"
+    }
+  ]
+}
