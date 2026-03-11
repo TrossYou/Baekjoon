@@ -1,4 +1,4 @@
-package SWEA.G4_3124;
+package SWEA.D4_3124;
 
 import java.io.*;
 import java.util.*;
