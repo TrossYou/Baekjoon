@@ -58,10 +58,13 @@ public class Solution {
 
       Arrays.sort(bridges, 0, bridgeIdx);
 
+      int selectedBridgeCnt = 0;
       for (int i = 0; i < bridgeIdx; i++) {
         Bridge bridge = bridges[i];
         if (union(bridge.a, bridge.b)) {
           ans += bridge.penalty;
+          if (++selectedBridgeCnt == N - 1)
+            break;
         }
       }
       sb.append('#').append(tc).append(' ').append(Math.round(ans)).append('\n');
