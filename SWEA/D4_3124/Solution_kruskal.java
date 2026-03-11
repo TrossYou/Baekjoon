@@ -3,7 +3,7 @@ package SWEA.D4_3124;
 import java.io.*;
 import java.util.*;
 
-public class Solution {
+public class Solution_kruskal {
   static class Edge implements Comparable<Edge> {
     int A, B, w;
 
