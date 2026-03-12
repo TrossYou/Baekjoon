@@ -3,7 +3,7 @@ package SWEA.D4_3124;
 import java.util.*;
 import java.io.*;
 
-public class Solution {
+public class Solution_prim {
   static int V, E, cnt;
   static long ans;
   static boolean[] isVisited;
