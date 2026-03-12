@@ -1,30 +1,15 @@
 package SWEA.D4_1251;
 
-import java.io.*;
 import java.util.*;
+import java.io.*;
 
 public class Solution {
-  static class Bridge implements Comparable<Bridge> {
-    int a, b;
-    double penalty;
-
-    Bridge(int a, int b, double penalty) {
-      this.a = a;
-      this.b = b;
-      this.penalty = penalty;
-    }
-
-    @Override
-    public int compareTo(Bridge o) {
-      return Double.compare(this.penalty, o.penalty);
-    }
-  }
-
-  static int N, bridgeIdx;
-  static double E, ans;
-  static int[] islandX, islandY;
-  static int[] parents;
-  static Bridge[] bridges;
+  static long ans;
+  static int N;
+  static int[] xArr, yArr;
+  static long[] minDist;
+  // minDist[]: MST에서부터 i섬까지 연결된 거리 중 최소
+  static boolean[] visited;
 
   public static void main(String[] args) throws IOException {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -33,78 +18,72 @@ public class Solution {
     int T = Integer.parseInt(br.readLine());
 
     for (int tc = 1; tc <= T; tc++) {
+      ans = 0L;
       N = Integer.parseInt(br.readLine());
-      ans = 0;
-      bridgeIdx = 0;
-      bridges = new Bridge[N * (N - 1) / 2];
-      islandX = new int[N];
-      islandY = new int[N];
-      parents = new int[N];
-      for (int i = 0; i < N; i++)
-        parents[i] = -1;
+      xArr = new int[N];
+      yArr = new int[N];
+      minDist = new long[N];
+      visited = new boolean[N];
 
       StringTokenizer st = new StringTokenizer(br.readLine());
       for (int i = 0; i < N; i++)
-        islandX[i] = Integer.parseInt(st.nextToken());
+        xArr[i] = Integer.parseInt(st.nextToken());
 
       st = new StringTokenizer(br.readLine());
       for (int i = 0; i < N; i++)
-        islandY[i] = Integer.parseInt(st.nextToken());
+        yArr[i] = Integer.parseInt(st.nextToken());
 
-      E = Double.parseDouble(br.readLine());
+      double E = Double.parseDouble(br.readLine());
 
-      for (int i = 1; i < N; i++)
-        calcBridge(i);
-
-      Arrays.sort(bridges, 0, bridgeIdx);
-
-      int selectedBridgeCnt = 0;
-      for (int i = 0; i < bridgeIdx; i++) {
-        Bridge bridge = bridges[i];
-        if (union(bridge.a, bridge.b)) {
-          ans += bridge.penalty;
-          if (++selectedBridgeCnt == N - 1)
-            break;
-        }
-      }
-      sb.append('#').append(tc).append(' ').append(Math.round(ans)).append('\n');
+      long totalDist = play();
+      ans = Math.round(E * totalDist);
+      sb.append('#').append(tc).append(' ').append(ans).append('\n');
     }
-
     System.out.print(sb);
   }
 
-  static void calcBridge(int a) {
-    for (int i = 0; i < a; i++) {
-      bridges[bridgeIdx++] = new Bridge(i, a, getPenalty(i, a));
+  static long play() {
+    long totalDist = 0L;
+    minDist[0] = 0L; // 0번 섬 추가
+    visited[0] = true;
+    int cnt = 1;
+
+    for (int i = 1; i < N; i++) {
+      minDist[i] = getDist(0, i); // 일단 0으로 리셋
     }
-  }
 
-  static int find(int a) {
-    if (parents[a] < 0)
-      return a;
-    return parents[a] = find(parents[a]);
-  }
+    while (cnt != N) {
+      int minIdx = -1;
+      long minD = Long.MAX_VALUE; // 최소 거리
 
-  static boolean union(int a, int b) {
-    int aRoot = find(a);
-    int bRoot = find(b);
+      // 현재 MST에서 거리가 가장 가까운 섬 찾기
+      for (int i = 0; i < N; i++) {
+        if (!visited[i] && minD > minDist[i]) {
+          minD = minDist[i];
+          minIdx = i;
+        }
+      }
 
-    if (aRoot == bRoot)
-      return false;
+      visited[minIdx] = true; // 방문
+      totalDist += minD;
+      cnt++;
 
-    if (parents[aRoot] <= parents[bRoot]) {
-      parents[aRoot] += parents[bRoot];
-      parents[bRoot] = aRoot;
-    } else {
-      parents[bRoot] += parents[aRoot];
-      parents[aRoot] = bRoot;
+      for (int i = 0; i < N; i++) { // minIdx를 minDist에 갱신
+        if (!visited[i]) {
+          long dist = getDist(minIdx, i);
+          if (dist < minDist[i]) {
+            minDist[i] = dist;
+          }
+        }
+      }
     }
-    return true;
+    return totalDist;
   }
 
-  static double getPenalty(int a, int b) {
-    long dx = islandX[a] - islandX[b];
-    long dy = islandY[a] - islandY[b];
-    return E * (dx * dx + dy * dy);
+  static long getDist(int a, int b) {
+    long dx = (long) xArr[a] - xArr[b];
+    long dy = (long) yArr[a] - yArr[b];
+
+    return dx * dx + dy * dy;
   }
 }
