@@ -1,109 +1,128 @@
 package SWEA.D5_pro_13072;
 
-import java.util.*;
-
 class UserSolution {
-  class Soldier {
-    int mID, mScore;
+    static final int MAX_NODE_NUM = 500005;
+    static int nodeCnt;
+    static int[] head, tail;
 
-    public Soldier(int mID, int mScore) {
-      this.mID = mID;
-      this.mScore = mScore;
-    }
-  }
+    static int[] nodeIns;
+    static int[] next;
 
-  class Team {
-    int mTeam; // 팀 번호
-    List<Soldier> soldiers; // 군사 목록
-    int bestScore, bestSoldierId;
+    static int[] soldierIdx;
+    static int[] soldierTeam;
 
-    Team(int mTeam) {
-      this.mTeam = mTeam;
-      soldiers = new ArrayList<>();
-      bestScore = 0;
-      bestSoldierId = 0;
-    }
-  }
+    public void init() {
+        nodeCnt = 1;
+        head = new int[36];
+        tail = new int[36];
+        nodeIns = new int[MAX_NODE_NUM];
+        next = new int[MAX_NODE_NUM];
 
-  Team[] teams;
-  int[] teamInfo; // i번 병사의 팀 번호
-
-  public void init() {
-    teams = new Team[6]; // 팀은 1~5
-    for (int i = 1; i <= 5; i++) {
-      teams[i] = new Team(i); // 이게 필요한가..?
-    }
-    teamInfo = new int[100001]; // i번 병사의 팀 번호
-  }
-
-  public void hire(int mID, int mTeam, int mScore) {
-    Team targetT = teams[mTeam];
-    targetT.soldiers.add(new Soldier(mID, mScore)); // 추가
-
-    // best병사 갱신
-    if (targetT.bestScore < mScore) {
-      targetT.bestScore = mScore;
-      targetT.bestSoldierId = mID;
-    } else if (targetT.bestScore == mScore && targetT.bestSoldierId < mID) {
-      targetT.bestSoldierId = mID;
+        soldierIdx = new int[100005];
+        soldierTeam = new int[100005];
     }
 
-    // 각 병사 별 팀 저장
-    teamInfo[mID] = mTeam;
-  }
+    private void addNode(int team, int score, int mID) {
+        int teamIdx = team * 6 + score;
+        nodeIns[nodeCnt] = mID;
+        next[nodeCnt] = 0;
+        soldierIdx[mID] = nodeCnt;
 
-  public void fire(int mID) {
-    int mTeam = teamInfo[mID];
-    Team targetT = teams[mTeam];
-    for (Soldier s : targetT.soldiers) {
-      if (s.mID == mID) {
-        targetT.soldiers.remove(s);
-
-        // 만약 bestScore병사였다면,, 갱신
-        if (targetT.bestSoldierId == mID) {
-          int newBestScore = 0;
-          int newBestSoldierId = 0;
-          for (Soldier newS : targetT.soldiers) {
-            if (newBestScore < newS.mScore) {
-              newBestScore = newS.mScore;
-              newBestSoldierId = newS.mID;
-            } else if (newBestScore == newS.mScore && newBestSoldierId < newS.mScore) {
-              newBestSoldierId = newS.mID;
-            }
-          }
-          targetT.bestScore = newBestScore;
-          targetT.bestSoldierId = newBestSoldierId;
+        if (head[teamIdx] == 0) {
+            head[teamIdx] = nodeCnt;
+            tail[teamIdx] = nodeCnt;
+        } else {
+            next[tail[teamIdx]] = nodeCnt;
+            tail[teamIdx] = nodeCnt;
         }
-
-        break;
-      }
+        nodeCnt++;
     }
-  }
 
-  public void updateSoldier(int mID, int mScore) {
-    int mTeam = teamInfo[mID];
-    Team targetT = teams[mTeam];
-    for (Soldier s : targetT.soldiers) {
-      if (s.mID == mID) {
-        s.mScore = mScore;
-        break;
-      }
+    public void hire(int mID, int mTeam, int mScore) {
+        soldierTeam[mID] = mTeam;
+        addNode(mTeam, mScore, mID);
     }
-  }
 
-  public void updateTeam(int mTeam, int mChangeScore) {
-    Team targetT = teams[mTeam];
-
-    for (Soldier s : targetT.soldiers) {
-      s.mScore += mChangeScore;
-      if (s.mScore > 5)
-        s.mScore = 5;
-      else if (s.mScore < 1)
-        s.mScore = 1;
+    public void fire(int mID) {
+        soldierIdx[mID] = 0;
     }
-  }
 
-  public int bestSoldier(int mTeam) {
-    return teams[mTeam].bestSoldierId;
-  }
+    public void updateSoldier(int mID, int mScore) {
+        int mTeam = soldierTeam[mID];
+        addNode(mTeam, mScore, mID);
+    }
+
+    public void updateTeam(int mTeam, int mChangeScore) {
+        if (mChangeScore == 0)
+            return;
+
+        if (mChangeScore > 0) {
+            for (int s = 4; s >= 1; s--) {
+                int currIdx = mTeam * 6 + s;
+                if (head[currIdx] == 0)
+                    continue;
+
+                int nxScore = s + mChangeScore;
+                if (nxScore > 5)
+                    nxScore = 5;
+                int nxIdx = mTeam * 6 + nxScore;
+
+                if (head[nxIdx] == 0) {
+                    head[nxIdx] = head[currIdx];
+                    tail[nxIdx] = tail[currIdx];
+                } else {
+                    next[tail[nxIdx]] = head[currIdx];
+                    tail[nxIdx] = tail[currIdx];
+                }
+
+                head[currIdx] = 0;
+                tail[currIdx] = 0;
+            }
+        } else {
+            for (int s = 2; s <= 5; s++) {
+                int currIdx = mTeam * 6 + s;
+                if (head[currIdx] == 0)
+                    continue;
+
+                int nxScore = s + mChangeScore;
+                if (nxScore < 1)
+                    nxScore = 1;
+                int nxIdx = mTeam * 6 + nxScore;
+
+                if (head[nxIdx] == 0) {
+                    head[nxIdx] = head[currIdx];
+                    tail[nxIdx] = tail[currIdx];
+                } else {
+                    next[tail[nxIdx]] = head[currIdx];
+                    tail[nxIdx] = tail[currIdx];
+                }
+
+                head[currIdx] = 0;
+                tail[currIdx] = 0;
+            }
+        }
+    }
+
+    public int bestSoldier(int mTeam) {
+        for (int s = 5; s >= 1; s--) {
+            int teamIdx = mTeam * 6 + s;
+            int curr = head[teamIdx];
+            int maxId = 0;
+
+            while (curr != 0) {
+                int id = nodeIns[curr];
+                if (soldierIdx[id] == curr) {
+                    if (id > maxId) {
+                        maxId = id;
+                    }
+                }
+                curr = next[curr];
+            }
+
+            if (maxId != 0) {
+                return maxId;
+            }
+        }
+        return 0;
+    }
 }

@@ -1,3 +1,5 @@
+package SWEA.D5_pro_13072;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
@@ -10,7 +12,7 @@ class Solution {
   private final static int CMD_UPDATE_TEAM = 5;
   private final static int CMD_BEST_SOLDIER = 6;
 
-  private final static UserSolution usersolution = new UserSolution();
+  private final static UserSolution_TLE usersolution = new UserSolution_TLE();
 
   private static boolean run(BufferedReader br) throws Exception {
     StringTokenizer st;
@@ -76,7 +78,7 @@ class Solution {
   public static void main(String[] args) throws Exception {
     int TC, MARK;
 
-    // System.setIn(new java.io.FileInputStream("res/sample_input.txt"));
+    System.setIn(new java.io.FileInputStream("res/sample_input.txt"));
 
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     StringTokenizer st = new StringTokenizer(br.readLine(), " ");
