@@ -1,4 +1,4 @@
-package Programmers.L3_기차선로;
+package L3_기차선로;
 
 import java.util.ArrayList;
 import java.util.List;

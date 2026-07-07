@@ -1,4 +1,4 @@
-package Programmers.L2_택배배달과수거하기;
+package L2_택배배달과수거하기;
 
 class Solution {
   public long solution(int cap, int n, int[] deliveries, int[] pickups) {

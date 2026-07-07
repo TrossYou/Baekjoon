@@ -1,4 +1,4 @@
-package Programmers.L3_베스트앨범;
+package L3_베스트앨범;
 
 import java.util.*;
 
