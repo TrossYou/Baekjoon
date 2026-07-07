@@ -1,0 +1,36 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Run Java (prompt for class)",
+      "request": "launch",
+      "mainClass": "${input:mainClass}",
+      "cwd": "${workspaceFolder}/${input:cwd}",
+      "console": "integratedTerminal",
+      "cwdType": "runtime"
+    },
+    {
+      "type": "java",
+      "name": "Run L2_타겟넘버.Main",
+      "request": "launch",
+      "mainClass": "L2_타겟넘버.Main",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "mainClass",
+      "type": "promptString",
+      "description": "Enter the fully-qualified main class (e.g. L2_타겟넘버.Main)",
+      "default": ""
+    },
+    {
+      "id": "cwd",
+      "type": "promptString",
+      "description": "Enter relative working folder from workspace root (e.g. L2_타겟넘버)",
+      "default": ""
+    }
+  ]
+}
