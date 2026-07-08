@@ -1,4 +1,4 @@
-package Programmers.L2_택배상자;
+package L2_택배상자;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package Programmers.L2_거리두기확인하기;
+package L2_거리두기확인하기;
 
 import java.util.ArrayList;
 import java.util.List;
